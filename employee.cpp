@@ -105,8 +105,8 @@ void Employee::printEmployee(Employee employee)
 {
     cout << "" << endl;
     cout << "Nhan vien : " << employee.getName() << " co id :" << employee.getId() << endl;
-    cout << "ngay sinh : " << employee.getDate() << endl;
-    cout << "song o : " << employee.getAddress() << " lam viec o bo phan : " << employee.getDepartment()<< endl;
+    cout << "Ngay sinh : " << employee.getDate() << endl;
+    cout << "Dia chi : " << employee.getAddress() << " lam viec o bo phan : " << employee.getDepartment()<< endl;
 }
 
 
@@ -150,7 +150,7 @@ void Employee::printEmployee(Employee employee)
  {
      cout <<"===========================================" <<endl;
      cout <<"= 1-Nhap thong tin nhan vien              =" << endl;
-     cout <<"= 2-Tim Thong tin nhan vien               =" << endl;
+     cout <<"= 2-Tim thong tin nhan vien               =" << endl;
      cout <<"===========================================" <<endl;
      cout << "Chon chuc nang (1-2):" << endl;
  }
