@@ -1,0 +1,10 @@
+01,pham thanh son,06/11/1999,hanoi,sinhvien
+02,dam quang toan,04/05/1985,hanoi,sinhvien
+03,vu nhu thuan,09/06/1999,hanoi,sinhvien
+04,ta khac thuong,02/05/1999,hanoi,sinhvien
+05,le huy tuong,06/08/1999,hanoi,sinhvien
+06,vu duy tam,07/05/1999,hanoi,sinhvien
+07,nguyen van a,07/07/1999,hanoi,sinhvien
+08,pham van b,09/09/1999,hanoi,sinhvien
+ho,van ten,,hanoi,hanoi
+10,vu hoang cam,01/09/1999,hanoi,sinhvien
