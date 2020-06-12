@@ -351,7 +351,133 @@ int work()
     }
 }
 
+void Employee::SearchEmployee(){
 
+
+   // string urlFile = "D:\\QT\\Homework\\data.csv";
+    map<string,Employee> list =  Employee::addMapEmployee(urlFile);
+    map<string,Employee>::iterator itr;
+
+
+    int choice;
+
+
+    do {
+        cout << ""<< endl;
+        cout <<"------- MENU SEARCH-------" <<endl;
+        cout <<"1-Search by ID           -" <<endl ;
+        cout <<"2-Search by Name         -" <<endl;
+        cout <<"3-Search by Address      -"<<endl ;
+        cout <<"4-Search by Department   -"<<endl ;
+        cout <<"0-exit employee search   -"<<endl ;
+        cout <<"--------------------------" <<endl;
+        cout << "Enter the choice you are looking for:  " ;
+        cin >> choice;
+        switch (choice) {
+        case 1:
+        {
+
+            string idSearch;
+            cout << "=> SEACH BY ID: " <<endl;
+            cout << "Enter staff id you are looking for:= " ;
+            cin >> idSearch;
+            int check = 0;
+            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                if(it->first == idSearch){
+                    printEmployee(it->second);
+                    check=1;
+                }
+            }
+            if(check == 0){
+
+                cout << "Not container";
+
+            }
+            break;
+        }
+        case 2:
+        {
+            cout << "=> SEACH BY NAME" << endl;
+            cin.ignore();
+            string name;
+            cout << "Enter name you are looking for:= ";
+            getline(cin,name);
+            int check = 0;
+            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                {
+
+                    printEmployee(it->second);
+                    check = 1;
+                }
+            }
+            if(check == 0){
+
+                cout << "Not container !";
+
+            }
+            fflush(stdin);
+            break;
+        }
+
+        case 3:
+        {
+
+            cout << "=> SEACH BY Adress" << endl;
+            cin.ignore();
+            string address;
+            cout << "Enter adress you are looking for:= ";
+            getline(cin,address);
+            int check = 0;
+            cout << "----= LIST ADSRESS = "<<address <<"=----" <<endl;
+            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                {
+
+                    printEmployee(it->second);
+                    check = 1;
+                }
+            }
+            if(check == 0){
+
+                cout << "Not container !";
+
+            }
+            fflush(stdin);
+            break;
+        }
+
+        case 4:
+        {
+            cout << "=> SEACH BY Department" <<endl;
+            cin.ignore();
+            string department;
+
+            cout << "Enter Department you are looking for:= ";
+            getline(cin,department);
+            cout << department <<"-------------";
+            int check = 0;
+            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                {
+                    printEmployee(it->second);
+                    check = 1;
+                }
+            }
+            if(check == 0){
+
+                cout << "Not container";
+
+            }
+            fflush(stdin);
+            break;
+        }
+        }
+
+    } while (choice != 0);
+
+
+
+    fflush(stdin);
+    cout << "\n-----= THE END SEARCH STAFF =-----" <<endl;
+}
 
 
 
