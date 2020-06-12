@@ -16,11 +16,13 @@ private:
     std::string _date;
     std::string _address;
     std::string _department;
+    std::string _workday;
+    std::string _status;
 
 public:
     Employee();
    Employee ( std::string id,  std::string name ,  std::string date
-             , std::string address ,  std::string department);
+             , std::string address ,  std::string department, std::string _workday, std::string _status);
 public:
 
    ~Employee(){
@@ -41,6 +43,12 @@ public:
    }
    void setDepartment(std::string department){
         _department = department;
+   }
+   void setWorkday(std::string workday){
+       _workday = workday;
+   }
+   void setStatus(std::string status){
+       _status = status;
    }
 //public:
 
@@ -73,7 +81,14 @@ public:
     std::string getDepartment(){
         return this->_department;
     };
+    std::string getWorkday(){
+        return this->_workday;
+    }
+    std::string getStatus(){
+        return this->_status;
+    }
 public:
+        static map<string,Employee>addMapEmployee(string urlfile);
 
         virtual void inputEmployee(string file);
 
