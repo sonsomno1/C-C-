@@ -23,7 +23,7 @@ void menu()
 void work()
 {
     Employee *employee;
-    string urlFile = "D:\\QT\\Homework\\EmployeeManagement\\Employee.txt";
+    string urlFile = "D:\\QT\\Homework\\EmployeeManagement\\data.csv";
     /* ./list.txt
 
        ../../../Desk/list.txt */
