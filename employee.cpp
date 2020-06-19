@@ -1,31 +1,54 @@
 #include "employee.h"
 
+
 #include <string>
-#include <fstream>
 #include <sstream>
+#include <fstream>
+#include <vector>
 #include <map>
 #include<cstring>
+#include <algorithm>
+#include <helper.h>
+#include <iomanip>
+#include <stdlib.h>
 
 using namespace std;
 
 string urlFile = "D:\\QT\\Homework\\EmployeeManagement\\data.csv";
 
-Employee::Employee()
-{
-}
+
 
 
 Employee::Employee(std::string id,  std::string name ,  std::string date
-                   , std::string address ,  std::string department,std::string workday,std::string status)
+                   , std::string address ,  std::string department)
 {
     _id = id;
     _name = name;
     _date = date;
     _address = address;
     _department = department;
-    _workday = workday;
-    _status = status;
+
 }
+
+void Employee::inputFile(string url,Employee employee){
+
+    fstream output(url, ios::app);;
+    string id = employee.getId();
+    string name = employee.getName();
+    string birthday = employee.getDate();
+    string address = employee.getAddress();
+    string department = employee.getDepartment();
+
+    output <<id <<",";
+    output <<name <<",";
+    output <<birthday <<",";
+    output <<address <<",";
+    output <<department <<endl;
+
+    output.close();
+}
+
+
 map<string,Employee> Employee::addMapEmployee(string urlfile){
     map<string,Employee> mapEmployee;
     ifstream output;
@@ -35,7 +58,7 @@ map<string,Employee> Employee::addMapEmployee(string urlfile){
         cout << "ERROR: File Open" << '\n';
     }
     while (output.good()) {
-        string lineId,lineName,lineDate,lineAddress,lineDepartment,line;
+        string lineId,lineName,lineDate,lineAddress,lineDepartment;
         getline(output,lineId,',');
         getline(output,lineName,',');
         getline(output,lineDate,',');
@@ -48,11 +71,13 @@ map<string,Employee> Employee::addMapEmployee(string urlfile){
 
     }
     output.close();
-       fflush(stdin);
+    fflush(stdin);
     return  mapEmployee;
-
+    map<string,Employee> list =  Employee::addMapEmployee(urlFile);
 }
- map<string,Employee> list =  Employee::addMapEmployee(urlFile);
+
+
+
 int validDate (string date )
 {
     stringstream ss(date);
@@ -88,115 +113,90 @@ int validDate (string date )
     return 0;
 }
 
-int Employee::checkIdInput(string file,string id){
+int Employee::checkIdInput(string id,map<string,Employee> list){
 
-    string line;
-    ifstream fileInput(file, ios::in);
-    if (fileInput.is_open())
-    {
+    for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+           if(it->first == id){
+               return 0;
+           }
+       }
 
-        while (!fileInput.eof())
-        {
-            getline(fileInput, line);
-            string epl = line;
-            istringstream stm(epl);
-            string token;
-            getline(stm, token, ',');
-            if (token == id)
-            {
-                return 0;
-            }
-
-        }
-        fileInput.close();
-    }
-    return 1;
+       return 1;
 }
 
-void Employee::inputEmployee(string file)
+void Employee::inputEmployee(map<string,Employee> list)
 {
-    ofstream myfile(file, ios::app);
-    if (myfile.is_open())
-    {
-       string id;
-       string name;
-       string date;
-       string address;
-       string department;
-       string workday;
-       string status;
+    cout <<"" <<endl;
+       cin.ignore();
 
-            cout << "Nhap id : ";
-            cin >> id;
-            while (checkIdInput(file, id) == 0) {
-                cout << "id bi trung  \n";
-                cout << "Nhap id : ";
-                cin >> id;
-            }
+       cout << "nhap ID : ";
+       getline(cin,_id);
+       while (true) {
+           if(checkIdInput(_id,list) == 0){
 
-            cout << "Nhap ten nhan vien: ";
-            cin.ignore();
-            getline(cin, name);
 
-            cout << "Nhap ngay sinh: ";
-            getline(cin, date);
-            while (validDate(date)==0)
-            {
-                cout << " loi ngay sinh" << endl;
-                cout << " nhap lai" << endl;
-                getline(cin , date);
-            }
+               cout << "ID trung : ";
+               getline(cin,_id);
+           }else{
+               break;
+           }
+       }
 
-            cout << "Nhap dia chi: ";
-            getline(cin, address);
-            while (address.empty())
-            {
-                cout << "Dia chi khong duoc bo trong \n";
-                cout << "Nhap lai dia chi \n";
-                getline(cin, address);
-            }
+       cout << "Nhap ten : ";
+       getline(cin,_name);
 
-            cout << "Nhap bo phan cong tac: ";
-            getline(cin, department);
-            while (department.empty())
-            {
-                cout << "Bo phan cong tac khong duoc bo trong \n";
-                cout << "Nhap lai bo phan cong tac \n";
-                getline(cin, department);
-            }
+       cout << "Nhap ngay sinh : ";
+       getline(cin,_date);
 
-            cout << "Nhap ngay di lam: ";
-            getline(cin, workday);
-            while(validDate(workday)==0)
-            {
-                cout << "loi" <<endl;
-                getline(cin , workday);
-            }
+       cout << "Nhap dia chi: ";
+       getline(cin,_address);
+       while ( _address == ""){
+           cout << "Dia chi bi trong  " <<endl;
+           cout << "Nhap lai : ";
+           getline(cin,_address);
+       }
+
+
+       cout << "Nhap bo phan : ";
+       getline(cin,_department);
+       while ( _department == ""){
+           cout << "Bo phan bi trong  "<< endl;
+           cout << "Nhap lai : ";
+           getline(cin,_department);
+       }
+
+       Employee employee = Employee(_id,_name,_date,_address,_department);
 
 
 
-            cout << "Nhap trang thai di lam: ";
-            getline(cin,status) ;
-            if (status.empty()) {status = "X";}
-            else
-            {
-             while (status != "DL" && status != "DLNN" && status != "N" && status != "NP")
-             {
-                cout << "loi " << endl;
-                cout << "nhap lai " << endl;
-                cin >> status;
-              }
-            }
+       inputFile(urlFile,employee);
 
-            myfile << id << "," << name << "," << date << "," << address << "," << department << "," << workday << "," << status << endl;
 
-        myfile.close();
-    }
+
+       fflush(stdin);
+
 
 
 }
 
+int isSubstring(string s1, string s2)
+{
+    std::transform(s1.begin(), s1.end(),s1.begin(), ::tolower);
+    std::transform(s2.begin(), s2.end(),s2.begin(), ::tolower);
+    int M = s1.length();
+    int N = s2.length();
+    for (int i = 0; i <= N - M; i++) {
+        int j;
+        for (j = 0; j < M; j++)
+            if (s2[i + j] != s1[j])
+                break;
 
+        if (j == M)
+            return i;
+    }
+
+    return -1;
+}
 void Employee::printEmployee(Employee employee)
 {
     cout << "" << endl;
@@ -205,279 +205,155 @@ void Employee::printEmployee(Employee employee)
     cout << "ngay sinh : " << employee.getDate() << endl;
     cout << "song o : " << employee.getAddress() << endl;
     cout << " lam viec o bo phan : " << employee.getDepartment() << endl;
-    cout << "ngay di lam : " << employee.getWorkday() << endl;
-    cout << " trang thai " << employee.getStatus() << endl;
+
 }
 
+void Employee::outEmployeeFile(map<string,Employee> list){
 
- Employee SearchId(string file , string id)
-{
-    Employee employee;
-    string line;
+    map<string,Employee>::iterator itr;
 
-    ifstream fileInput(file, ios::in);
-    if (fileInput.is_open())
-    {
+    cout << "The number of employees on the list:  "<< list.size() << endl;
 
-        while (!fileInput.eof())
-        {
-            getline(fileInput, line);
-            string epl = line;
-            istringstream stm(epl);
-            string token;
-            getline(stm, token, ',');
-            if (token == id)
-            {
-                employee.setId(id);
-                getline(stm, token, ',');
-                employee.setName(token);
-                getline(stm, token, ',');
-                employee.setDate(token);
-                getline(stm, token, ',');
-                employee.setAddress(token);
-                getline(stm, token, ',');
-                employee.setDepartment(token);
-                getline(stm,token, ',');
-                employee.setWorkday(token);
-                getline(stm,token, ',');
-                employee.setStatus(token);
-
-            }
-
-        }
-//        myfile << id << "," << name << "," << date << "," << address << "," << department << "," << workday << "," << status << endl;
-        fileInput.close();
+    for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+        printEmployee(it->second);
     }
-    return employee;
-}
-Employee changeStatus(string file , string id )
-{
-    Employee employee;
-    string line;
-
-    ifstream fileInput(file, ios::in);
-    if (fileInput.is_open())
-    {
-
-        while (!fileInput.eof())
-        {
-            getline(fileInput, line);
-            string epl = line;
-            istringstream stm(epl);
-            string token;
-            string workday;
-            string newstatus;
-            getline(stm, token, ',');
-            if (token == id)
-            {
-                //cout << "nhap ngay diem danh :" << endl;
-               // cin >> workday;
-                cout << "nhap trang thai: "<<endl;
-                cin >> newstatus;
-                employee.setId(id);
-                getline(stm, token, ',');
-                employee.setName(token);
-                getline(stm, token, ',');
-                employee.setDate(token);
-                getline(stm, token, ',');
-                employee.setAddress(token);
-                getline(stm, token, ',');
-                employee.setDepartment(token);
-                getline(stm,token, ',');
-                employee.setWorkday(token);
-                getline(stm,token, ',');
-                employee.setStatus(newstatus);
-
-            }
-
-        }
-        fileInput.close();
-    }
-    return employee;
-}
-
-
- void menu()
- {
-     cout <<"===========================================" <<endl;
-     cout <<"= 1-Nhap thong tin nhan vien              =" << endl;
-     cout <<"= 2-Tim Thong tin nhan vien               =" << endl;
-     cout <<"= 3-Cap nhat trang thai di lam            =" << endl;
-     cout <<"===========================================" <<endl;
-     cout << "Chon chuc nang (1-2-3):" << endl;
  }
-int work()
+
+void Employee::searchEmployee(map<string,Employee> list)
 {
-    Employee *employee;
-    string urlFile = "D:\\QT\\Homework\\EmployeeManagement\\Employee.txt";
-    /* ./list.txt
-
-       ../../../Desk/list.txt */
-
-    int choice;
-    employee = new Employee();
-    do
-    {
-      menu();
-      cin >> choice;
-      switch (choice) {
-      case 1:
-      {
-          employee->inputEmployee(urlFile);
-
-      }
-          break;
-
-      case 2:
-      {
-          string id;
-          cout << "nhap id"<< endl;
-          cin >> id;
-          employee->printEmployee(SearchId(urlFile,id));
-      }
-          break;
-
-      case 3:
-      {
-          string id;
-          cout << "nhap id"<< endl;
-          cin >> id;
-          employee->printEmployee(changeStatus(urlFile,id));
-      }
-          break;
-      }
-    } while (choice != 0); {
-        return 0;
-    }
-}
-
-void Employee::SearchEmployee(){
-
-
-   // string urlFile = "D:\\QT\\Homework\\data.csv";
-    map<string,Employee> list =  Employee::addMapEmployee(urlFile);
     map<string,Employee>::iterator itr;
 
 
-    int choice;
+      int choice;
 
 
-    do {
-        cout << ""<< endl;
-        cout <<"------- MENU SEARCH-------" <<endl;
-        cout <<"1-Search by ID           -" <<endl ;
-        cout <<"2-Search by Name         -" <<endl;
-        cout <<"3-Search by Address      -"<<endl ;
-        cout <<"4-Search by Department   -"<<endl ;
-        cout <<"0-exit employee search   -"<<endl ;
-        cout <<"--------------------------" <<endl;
-        cout << "Enter the choice you are looking for:  " ;
-        cin >> choice;
-        switch (choice) {
-        case 1:
-        {
+      do {
+          cout << ""<< endl;
+          cout <<"------- MENU SEARCH-------" <<endl;
+          cout <<"1-Tim ID           -" <<endl ;
+          cout <<"2-Tim Ten         -" <<endl;
+          cout <<"3-Tim Dia chi      -"<<endl ;
+          cout <<"4-Tim Bo phan cong tac   -"<<endl ;
+          cout <<"0-thoat   -"<<endl ;
+          cout <<"--------------------------" <<endl;
+          cout << "Nhap lua chon  " ;
+          cin >> choice;
+          switch (choice) {
+          case 1:
+          {
 
-            string idSearch;
-            cout << "=> SEACH BY ID: " <<endl;
-            cout << "Enter staff id you are looking for:= " ;
-            cin >> idSearch;
-            int check = 0;
-            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
-                if(it->first == idSearch){
-                    printEmployee(it->second);
-                    check=1;
-                }
-            }
-            if(check == 0){
+              string idSearch;
+              cout << "=> Tim ID: " <<endl;
+              cout << "Nhap Id := " ;
+              cin >> idSearch;
+              int check = 0;
 
-                cout << "Not container";
+              for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                  if(it->first == idSearch){
+                      printEmployee(it->second);
+                      check = 1;
+                  }
+              }
+              if(check == 0){
 
-            }
-            break;
-        }
-        case 2:
-        {
-            cout << "=> SEACH BY NAME" << endl;
-            cin.ignore();
-            string name;
-            cout << "Enter name you are looking for:= ";
-            getline(cin,name);
-            int check = 0;
-            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
-                {
+                  cout << "Khong co ID hop le ";
 
-                    printEmployee(it->second);
-                    check = 1;
-                }
-            }
-            if(check == 0){
+              }
+              break;
+          }
+          case 2:
+          {
+              cout << "=> Tim ten" << endl;
+              cin.ignore();
+              string name;
+              cout << "Nhap ten nhan vien := ";
+              getline(cin,name);
+              int check = 0;
 
-                cout << "Not container !";
+              for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                  if(isSubstring(name,it->second.getName()) >= 0){
 
-            }
-            fflush(stdin);
-            break;
-        }
+                      printEmployee(it->second);
+                      check = 1;
+                  }
+              }
+              if(check == 0){
 
-        case 3:
-        {
+                  cout << "Khong co ten hop le ";
 
-            cout << "=> SEACH BY Adress" << endl;
-            cin.ignore();
-            string address;
-            cout << "Enter adress you are looking for:= ";
-            getline(cin,address);
-            int check = 0;
-            cout << "----= LIST ADSRESS = "<<address <<"=----" <<endl;
-            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
-                {
+              }
+              fflush(stdin);
+              break;
+          }
 
-                    printEmployee(it->second);
-                    check = 1;
-                }
-            }
-            if(check == 0){
+          case 3:
+          {
 
-                cout << "Not container !";
+              cout << "=> Tim dia chi " << endl;
+              cin.ignore();
+              string address;
+              cout << "Nhap dia chi can tim:= ";
+              getline(cin,address);
+              int check = 0;
+              cout << "----= LIST ADSRESS = "<<address <<"=----" <<endl;
 
-            }
-            fflush(stdin);
-            break;
-        }
+              for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                  if(isSubstring(address,it->second.getAddress()) >= 0){
 
-        case 4:
-        {
-            cout << "=> SEACH BY Department" <<endl;
-            cin.ignore();
-            string department;
+                      printEmployee(it->second);
+                      check = 1;
+                  }
+              }
+              if(check == 0){
 
-            cout << "Enter Department you are looking for:= ";
-            getline(cin,department);
-            cout << department <<"-------------";
-            int check = 0;
-            for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
-                {
-                    printEmployee(it->second);
-                    check = 1;
-                }
-            }
-            if(check == 0){
+                  cout << "Khong co dia chi hop le  !";
 
-                cout << "Not container";
+              }
+              fflush(stdin);
+              break;
+          }
 
-            }
-            fflush(stdin);
-            break;
-        }
-        }
+          case 4:
+          {
+              cout << "=> Tim bo phan cong tac " <<endl;
+              cin.ignore();
+              string department;
 
-    } while (choice != 0);
+              cout << "Nhap bo phan cong tac can tim:= ";
+              getline(cin,department);
+              cout << department <<"-------------"<< endl;
+              int check = 0;
+
+              for(map<string,Employee>::iterator it = list.begin();it != list.end();it++){
+                  if(isSubstring(department,it->second.getDepartment()) >= 0){
+                      printEmployee(it->second);
+                      check = 1;
+                  }
+              }
+              if(check == 0){
+
+                  cout << "Khong co bo phan hop le ";
+
+              }
+              fflush(stdin);
+              break;
+          }
+          }
+
+      } while (choice != 0);
 
 
 
-    fflush(stdin);
-    cout << "\n-----= THE END SEARCH STAFF =-----" <<endl;
-}
+      fflush(stdin);
+
+  }
+
+
+
+
+
+
+
 
 
 

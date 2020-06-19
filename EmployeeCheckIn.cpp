@@ -56,9 +56,6 @@ void EmployeeCheckIn::updateStatus(string status, string urlFile)
     cin.ignore();
        fstream output(urlFile, ios::app);;
 
-       // lay thoi gian thuc
-
-
        getline(cin,status);
 
        output <<getWorkday() <<",";

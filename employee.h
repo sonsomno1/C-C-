@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 #pragma once
 #include<bits/stdc++.h>
 
@@ -16,13 +17,12 @@ private:
     std::string _date;
     std::string _address;
     std::string _department;
-    std::string _workday;
-    std::string _status;
+
 
 public:
-    Employee();
+    Employee(){};
    Employee ( std::string id,  std::string name ,  std::string date
-             , std::string address ,  std::string department, std::string _workday, std::string _status);
+             , std::string address ,  std::string department);
 public:
 
    ~Employee(){
@@ -44,12 +44,7 @@ public:
    void setDepartment(std::string department){
         _department = department;
    }
-   void setWorkday(std::string workday){
-       _workday = workday;
-   }
-   void setStatus(std::string status){
-       _status = status;
-   }
+
 //public:
 
 //    const std::string &id() const;
@@ -62,39 +57,39 @@ public:
 
 //    const std::string &department() const;
 public:
-    std::string getId(){
+    std::string &getId(){
         return this->_id;
     };
 
-    std::string getName(){
+    std::string &getName(){
         return this->_name;
     };
 
-    std::string getDate(){
+    std::string &getDate(){
         return this->_date;
     };
 
-   std:: string getAddress(){
+   std:: string &getAddress(){
         return this->_address;
     };
 
-    std::string getDepartment(){
+    std::string &getDepartment(){
         return this->_department;
     };
-    std::string getWorkday(){
-        return this->_workday;
-    }
-    std::string getStatus(){
-        return this->_status;
-    }
+
+
 public:
         static map<string,Employee>addMapEmployee(string urlfile);
-
-        virtual void inputEmployee(string file);
+        virtual void inputFile(string url,Employee employee);
+        virtual void inputEmployee(map<string,Employee> list);
 
         virtual void printEmployee(Employee employee);
+        virtual void outEmployeeFile(map<string,Employee> list);
+        static int checkIdInput(string id,map<string,Employee> list);
 
-        virtual int checkIdInput(string file,string id);
+        virtual void searchEmployee(map<string,Employee> list);
+
+        static vector<string> cutStringDate(string s,string delimiter);
 
 
 };
